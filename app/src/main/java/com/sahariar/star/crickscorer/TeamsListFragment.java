@@ -2,19 +2,35 @@ package com.sahariar.star.crickscorer;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.sahariar.star.crickscorer.Model.PlayerModel;
+import com.sahariar.star.crickscorer.Model.Team;
+import com.sahariar.star.crickscorer.Others.SwipeMenuImpl;
+import com.sahariar.star.crickscorer.database.DB;
+import com.sahariar.star.crickscorer.database.Player;
+import com.sahariar.star.crickscorer.database.PlayerToTeam;
+import com.sahariar.star.crickscorer.database.TeamDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +39,20 @@ import java.util.List;
 public class TeamsListFragment extends Fragment {
     Dialog addTeam;
     ArrayAdapter<String> adapter;
+    List<PlayerModel> pms;
+    PlayerModel playerpool[];
+    DB db;
+    Player player;
+    ArrayList<PlayerModel> selectedPlayer;
+    EditText teamname;
+    TeamDB teamDb;
+    PlayerToTeam playerToTeam;
+    List<Team> teams;
+    Team teamListArray[];
+    SwipeMenuListView teamlistView;
 
+    //List on the window
+    ArrayAdapter<String> teamListAdapter;
 
     public TeamsListFragment() {
         // Required empty public constructor
@@ -42,6 +71,13 @@ public class TeamsListFragment extends Fragment {
 
         addTeam=new Dialog(getContext());
 
+        //databse
+        db=new DB(getContext());
+        player=new Player();
+        teamDb=new TeamDB();
+        playerToTeam=new PlayerToTeam();
+        //database ends
+
 
         FloatingActionButton fab=(FloatingActionButton)root.findViewById(R.id.fab);
         fab.setEnabled(true);
@@ -57,10 +93,58 @@ public class TeamsListFragment extends Fragment {
         });
 
 
+        //generating the list--start
+        teams=teamDb.getAllplayers(db.getReadableDatabase());
+        teamListArray= teams.toArray(new Team[teams.size()]);
+
+        List<String> teamnames=new ArrayList<>();
+        for(Team t:teams)
+        {
+            teamnames.add(t.getName());
+        }
+        teamListAdapter=new ArrayAdapter<String>(getContext(),R.layout.listcontainer,R.id.listviewtextcontainer,teamnames);
+        teamlistView=(SwipeMenuListView)root.findViewById(R.id.teamlist);
+        teamlistView.setAdapter(teamListAdapter);
+        teamlistView.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
+        teamlistView.setMenuCreator(new SwipeMenuImpl(getContext()));
+        teamlistView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+
+                        int id=teamListArray[position].getId();
+                        teamDb.delete(db.getWritableDatabase(),id);
+                        resetList();
+
+                        break;
+
+                }
+                // false : close the menu; true : not close the menu
+                return true;
+            }
+        });
+
+
+        //generating the list--end
+
+
         return root;
     }
 
-    ArrayList<String> selectedTeams=new ArrayList<String>();
+    public void resetList()
+    {
+        teamListAdapter.clear();
+        teams=teamDb.getAllplayers(db.getReadableDatabase());
+        teamListArray=teams.toArray(new Team[teams.size()]);
+        List<String> teamnamelist=new ArrayList<>();
+        for(Team t:teamListArray)
+        {
+            teamnamelist.add(t.getName());
+        }
+        teamListAdapter.addAll(teamnamelist);
+
+    }
 
 
      public void showPopDialog()
@@ -70,33 +154,73 @@ public class TeamsListFragment extends Fragment {
 
 
 
-
+         selectedPlayer=new ArrayList<>();
          addTeam.setContentView(R.layout.addteanmodal);
-
+         teamname=(EditText)addTeam.findViewById(R.id.teamnametext);
          ListView list=(ListView)addTeam.findViewById(R.id.listplayers);
 
          list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-         String[] items={"Bangladesh","India","China","Srilanka","India","China","Srilanka","India","China","Srilanka","India","China","Srilanka","India","China","Srilanka","India","China","Srilanka"};
+         pms=player.getAllplayers(db.getReadableDatabase());
+         playerpool=pms.toArray(new PlayerModel[pms.size()]);
 
+         List<String> items=new ArrayList<>();
 
-         ArrayAdapter<String> adapter=new ArrayAdapter<String>(getContext(),R.layout.rowlayout,R.id.checkBox,items);
-         list.setAdapter(adapter);
-         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+         for(PlayerModel p:pms)
+         {
+             items.add(p.getName());
+         }
+          adapter=new ArrayAdapter<String>(getContext(),R.layout.rowlayout,R.id.checkBox,items);
+          list.setAdapter(adapter);
+          list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
              @Override
              public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                 String  team=((TextView)view).getText().toString();
+                 String  playername=((TextView)view).getText().toString();
+                 PlayerModel splayer=findPlayerByName(playername);
 
-                 if(selectedTeams.contains(team))
+                 if(selectedPlayer.contains(splayer))
                  {
-                     selectedTeams.remove(team);
+                     selectedPlayer.remove(splayer);
                  }
                  else
                  {
-                     selectedTeams.add(team);
+                     selectedPlayer.add(splayer);
                  }
              }
          });
+
+         Button submit=(Button)addTeam.findViewById(R.id.add);
+         submit.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 //Add team name
+                 //add players
+                 String name=teamname.getText().toString();
+                 if(name.length()!=0)
+                 {
+                     //add team to database
+                     long id=teamDb.add(db.getWritableDatabase(),name);
+                     //add player to to team_player
+                     for(PlayerModel p:selectedPlayer)
+                     {
+                         playerToTeam.add(db.getWritableDatabase(),p.getId(),id);
+                     }
+                     resetList();
+
+
+                 }
+
+
+                addTeam.dismiss();
+
+
+
+
+             }
+         });
+
+
+
 
 
          Button close=(Button)addTeam.findViewById(R.id.closebtnteammodal);
@@ -108,6 +232,20 @@ public class TeamsListFragment extends Fragment {
          });
          addTeam.show();
 
+     }
+
+     public PlayerModel findPlayerByName(String name)
+     {
+
+         for(PlayerModel p:playerpool )
+         {
+             if(p.getName().equals(name))
+             {
+                 return p;
+             }
+         }
+
+         return null;
      }
 
 }

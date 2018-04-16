@@ -69,8 +69,18 @@ public class DB extends SQLiteOpenHelper {
                 "bowler_id INTEGER,"+
                 "match_id INTEGER"
                 +");";
+        String teams="Create Table teams "+
+                  "("+
+                  "id INTEGER PRIMARY KEY AUTOINCREMENT ,"+
+                  "name Text"
+                  +");";
 
-
+        String team_player="Create Table team_player "+
+                "("+
+                "id INTEGER PRIMARY KEY AUTOINCREMENT ,"+
+                "team_id INTEGER,"+
+                "player_id INTEGER"
+                +");";
 
 
 
@@ -80,6 +90,9 @@ public class DB extends SQLiteOpenHelper {
         db.execSQL(players);
         db.execSQL(balls);
         db.execSQL(overs);
+        db.execSQL(teams);
+        db.execSQL(team_player);
+
 
 
 

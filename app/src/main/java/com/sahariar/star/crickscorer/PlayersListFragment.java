@@ -198,7 +198,7 @@ public class PlayersListFragment extends Fragment {
         playersAlldata=player.getAllplayers(db.getReadableDatabase());
         pms=playersAlldata.toArray(new PlayerModel[playersAlldata.size()]);
 
-        List<PlayerModel> playersAlldata=player.getAllplayers(db.getReadableDatabase());
+        //List<PlayerModel> playersAlldata=player.getAllplayers(db.getReadableDatabase());
         List<String> players=new ArrayList<>();
         for(PlayerModel pm:playersAlldata )
         {
