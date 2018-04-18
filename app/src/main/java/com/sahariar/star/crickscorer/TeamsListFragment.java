@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +53,8 @@ public class TeamsListFragment extends Fragment {
     List<Team> teams;
     Team teamListArray[];
     SwipeMenuListView teamlistView;
-
+    ArrayAdapter<String> modalAdapter;
+    ListView list;
     //List on the window
     ArrayAdapter<String> teamListAdapter;
 
@@ -124,6 +128,13 @@ public class TeamsListFragment extends Fragment {
                 return true;
             }
         });
+        teamlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.v("Team_id is : ",teamListArray[position].getId()+"");
+                ChangeFragment(new TeamPlayersFragment(),teamListArray[position].getId());
+            }
+        });
 
 
         //generating the list--end
@@ -145,7 +156,21 @@ public class TeamsListFragment extends Fragment {
         teamListAdapter.addAll(teamnamelist);
 
     }
+    public void ChangeFragment(Fragment fragment, long id)
+    {
+        Bundle bundle=new Bundle();
+        bundle.putString("team_id",id+"");
+        fragment.setArguments(bundle);
 
+        FragmentManager fm=getActivity().getSupportFragmentManager();
+        FragmentTransaction ft=fm.beginTransaction();
+
+        ft.replace(R.id.main_fragments_container,fragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+        ft.addToBackStack(null);
+        ft.commit();
+
+    }
 
      public void showPopDialog()
      {
@@ -157,7 +182,7 @@ public class TeamsListFragment extends Fragment {
          selectedPlayer=new ArrayList<>();
          addTeam.setContentView(R.layout.addteanmodal);
          teamname=(EditText)addTeam.findViewById(R.id.teamnametext);
-         ListView list=(ListView)addTeam.findViewById(R.id.listplayers);
+         list=(ListView)addTeam.findViewById(R.id.listplayers);
 
          list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
@@ -170,24 +195,30 @@ public class TeamsListFragment extends Fragment {
          {
              items.add(p.getName());
          }
-          adapter=new ArrayAdapter<String>(getContext(),R.layout.rowlayout,R.id.checkBox,items);
+          adapter=new ArrayAdapter<String>(getContext(),R.layout.rowlayout,items);
           list.setAdapter(adapter);
+
           list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
              @Override
              public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                  String  playername=((TextView)view).getText().toString();
                  PlayerModel splayer=findPlayerByName(playername);
 
                  if(selectedPlayer.contains(splayer))
                  {
+
                      selectedPlayer.remove(splayer);
                  }
                  else
                  {
+
                      selectedPlayer.add(splayer);
                  }
              }
          });
+
+
 
          Button submit=(Button)addTeam.findViewById(R.id.add);
          submit.setOnClickListener(new View.OnClickListener() {
@@ -195,14 +226,18 @@ public class TeamsListFragment extends Fragment {
              public void onClick(View v) {
                  //Add team name
                  //add players
+
+
                  String name=teamname.getText().toString();
                  if(name.length()!=0)
                  {
                      //add team to database
                      long id=teamDb.add(db.getWritableDatabase(),name);
                      //add player to to team_player
+
                      for(PlayerModel p:selectedPlayer)
                      {
+                        
                          playerToTeam.add(db.getWritableDatabase(),p.getId(),id);
                      }
                      resetList();
