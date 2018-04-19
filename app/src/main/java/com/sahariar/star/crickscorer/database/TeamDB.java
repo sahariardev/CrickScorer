@@ -48,7 +48,24 @@ public class TeamDB {
             return false;
         }
     }
+    public String getTeamName(SQLiteDatabase db,long id)
+    {
+        String sql="Select * from "+tableName+" where id="+id;
+        Cursor res=db.rawQuery(sql,null);
+        res.moveToFirst();
 
+        Team team=new Team(0,null);
+
+        while(!res.isAfterLast())
+        {
+
+            team=new Team(Integer.parseInt(res.getString(0)),res.getString(1));
+
+            res.moveToNext();
+        }
+
+        return team.getName();
+    }
 
     //remove team
     //show all team
