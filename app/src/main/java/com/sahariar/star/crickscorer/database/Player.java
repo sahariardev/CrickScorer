@@ -40,10 +40,18 @@ public class Player {
     //RemovePlayer->boolean
     public boolean deletePlayer(SQLiteDatabase db,int id)
     {
-
+       PlayerToTeam ptm=new PlayerToTeam();
         try {
-            db.delete(tableName, "id=" + id, null);
-            return true;
+
+            if(ptm.deleteByPlayerId(db,id)) {
+
+                db.delete(tableName, "id=" + id, null);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         catch(Exception e)
         {

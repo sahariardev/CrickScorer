@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.sahariar.star.crickscorer.SummeryFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+
+
+
+        <TextView
+            android:id="@+id/teamname1"
+
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="40sp"
+            android:textColor="@color/colorAdvanceDark"
+            android:textAlignment="center"
+
+            android:text="CSK" />
+        <ListView
+            android:id="@+id/team1listview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/teamname2"
+
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="40sp"
+            android:textColor="@color/colorAdvanceDark"
+            android:textAlignment="center"
+
+            android:text="KKR" />
+        <ListView
+            android:layout_width="match_parent"
+            android:id="@+id/team2listview"
+            android:layout_height="0dp"
+            android:layout_weight="3" />
+
+    </LinearLayout>
+</LinearLayout>

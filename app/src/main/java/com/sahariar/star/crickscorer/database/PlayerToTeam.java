@@ -16,7 +16,7 @@ public class PlayerToTeam {
 
     public long add(SQLiteDatabase db, long player_id,long team_id)
     {
-        Log.v("Team idontheonhedb",team_id+""+player_id);
+
         try {
             ContentValues team = new ContentValues();
             team.put("player_id", player_id);
@@ -41,6 +41,17 @@ public class PlayerToTeam {
         }
 
     }
+    public boolean deletePlayerFromTeam(SQLiteDatabase db, long player_id)
+    {
+        try {
+            db.delete(tableName, "player_id=" + player_id, null);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
     public boolean deleteByPlayerId(SQLiteDatabase db, long player_id)
     {
         try {
@@ -52,5 +63,7 @@ public class PlayerToTeam {
             return false;
         }
     }
+
+
 
 }

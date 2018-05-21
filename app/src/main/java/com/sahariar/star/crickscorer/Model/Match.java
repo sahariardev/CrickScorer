@@ -17,6 +17,10 @@ public class Match {
         this.team1_id = team1_id;
         this.team2_id = team2_id;
     }
+
+    public Match() {
+    }
+
     public String getName()
     {
         return "";
@@ -62,4 +66,23 @@ public class Match {
         this.result = result;
     }
 
+    public void setTournament_id(int tournament_id) {
+        this.tournament_id = tournament_id;
+    }
+
+    public int getTournament_id() {
+        return tournament_id;
+    }
+
+    @Override
+    public String toString() {
+        return "Match{" +
+                "id=" + id +
+                ", team1_id=" + team1_id +
+                ", team2_id=" + team2_id +
+                ", winner_id=" + winner_id +
+                ", tournament_id=" + tournament_id +
+                ", result='" + result + '\'' +
+                '}';
+    }
 }

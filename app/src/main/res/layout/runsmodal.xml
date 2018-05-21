@@ -1,34 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update Score"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:background="@color/colorPrimaryLight"
+        android:padding="10dp"
+        android:textColor="@color/colorAccent"
+
+        android:layout_weight="0.16" />
 
     <LinearLayout
         android:layout_width="match_parent"
+
         android:layout_height="112dp"
         android:orientation="horizontal"
         android:layout_margin="10dp"
-        android:weightSum="1">
+        android:weightSum="3">
 
         <Button
             android:id="@+id/buttonforsix"
-            android:layout_width="wrap_content"
+            style="@style/raisedButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="60sp"
             android:layout_height="match_parent"
-            android:layout_weight="0.31"
+
             android:text="6" />
 
         <Button
-            android:id="@+id/buttonfor4"
-            android:layout_width="wrap_content"
+            android:id="@+id/buttonforfour"
+            style="@style/raisedButton"
+            android:layout_width="0dp"
+            android:textSize="60sp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_weight="0.34"
+
             android:text="4" />
 
         <Button
             android:id="@+id/buttonforsingle"
-            android:layout_width="wrap_content"
+            style="@style/raisedButton"
+            android:layout_width="0dp"
+            android:textSize="60sp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_weight="0.29"
+
             android:text="1" />
     </LinearLayout>
 
@@ -39,23 +63,29 @@
         android:orientation="horizontal">
         <Button
             android:id="@+id/buttonfordouble"
-            android:layout_width="wrap_content"
+            style="@style/raisedButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_weight="0.31"
+            android:textSize="60sp"
             android:text="2" />
 
         <Button
             android:id="@+id/buttonfortripple"
-            android:layout_width="wrap_content"
+            style="@style/raisedButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_weight="0.34"
+            android:textSize="60sp"
             android:text="3" />
 
         <Button
             android:id="@+id/buttonforwide"
-            android:layout_width="wrap_content"
+            style="@style/raisedButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_weight="0.29"
+
             android:text="wide" />
 
 
@@ -66,26 +96,42 @@
         android:layout_width="match_parent"
         android:layout_height="102dp"
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/buttonfornoball"
-            android:layout_width="wrap_content"
+            style="@style/raisedButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_weight="0.31"
+
             android:text="No ball" />
 
         <Button
             android:id="@+id/buttonforbounce"
-            android:layout_width="wrap_content"
+            style="@style/raisedButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="13sp"
             android:layout_height="match_parent"
-            android:layout_weight="0.34"
             android:text="Bounce" />
 
         <Button
             android:id="@+id/buttonfordot"
-            android:layout_width="wrap_content"
+            style="@style/raisedButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_weight="0.29"
+
             android:text="Dot" />
+
+        <Button
+            android:id="@+id/out"
+            style="@style/raisedButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="Out"
+             />
 
     </LinearLayout>
 
@@ -96,16 +142,12 @@
 
         <Button
             android:id="@+id/buttonforcancel"
+            style="@style/raisedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Cancel" />
 
-        <Button
-            android:id="@+id/buttonforadd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="add" />
+
     </LinearLayout>
 </LinearLayout>

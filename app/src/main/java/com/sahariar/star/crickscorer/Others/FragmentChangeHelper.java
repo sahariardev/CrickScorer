@@ -22,9 +22,11 @@ public class FragmentChangeHelper {
         ft.addToBackStack(null);
         ft.commit();
     }
-    public void change(Fragment fragment,FragmentManager manager,int containerId,String key,String value)
+    public void change(Fragment fragment,FragmentManager manager,String key,String value)
     {
         Bundle bundle =new Bundle();
+        bundle.putString(key,value);
+        fragment.setArguments(bundle);
 
         FragmentManager fm=manager;
         FragmentTransaction ft=fm.beginTransaction();

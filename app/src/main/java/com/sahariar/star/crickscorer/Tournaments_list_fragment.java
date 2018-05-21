@@ -20,6 +20,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sahariar.star.crickscorer.Model.Team;
+import com.sahariar.star.crickscorer.Model.TournamentModel;
+import com.sahariar.star.crickscorer.Others.FragmentChangeHelper;
 import com.sahariar.star.crickscorer.database.DB;
 import com.sahariar.star.crickscorer.database.Tournament;
 
@@ -36,7 +39,10 @@ public class Tournaments_list_fragment extends Fragment {
 
     Dialog addTournament;
     ArrayAdapter<String> adapter;
-
+    DB d;
+    Tournament t;
+    TournamentModel []tournaments;
+    List<TournamentModel> tournamensList;
     public Tournaments_list_fragment() {
         // Required empty public constructor
     }
@@ -49,12 +55,19 @@ public class Tournaments_list_fragment extends Fragment {
         View root= inflater.inflate(R.layout.fragment_tournaments_list_fragment, container, false);
 
         addTournament=new Dialog(getContext());
-        DB d=new DB(getContext());
-        Tournament t=new Tournament();
-        //t.Insert(d.getWritableDatabase(),"Masdair");
-        String data[]=t.getTournamentList(d.getReadableDatabase());
-        List<String> tournaments=new ArrayList<String>(Arrays.asList(data));
-        adapter=new ArrayAdapter<String>(getContext(),R.layout.listcontainer,R.id.listviewtextcontainer,tournaments);
+        d=new DB(getContext());
+        t=new Tournament();
+
+        tournamensList=t.getAll(d.getReadableDatabase());
+        tournaments=tournamensList.toArray(new TournamentModel[tournamensList.size()]);
+
+        List<String> tournamentsName=new ArrayList<>();
+        for(TournamentModel tm:tournaments)
+        {
+            tournamentsName.add(tm.getName());
+        }
+
+        adapter=new ArrayAdapter<String>(getContext(),R.layout.listcontainer,R.id.listviewtextcontainer,tournamentsName);
 
 
 
@@ -81,8 +94,9 @@ public class Tournaments_list_fragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
-                ChangeFragment(new MatchesFragment());
+                  long tournament_id=tournaments[position].getId();
+                  FragmentChangeHelper fc=new FragmentChangeHelper();
+                  fc.change(new MatchesFragment(),getFragmentManager(),"id",tournament_id+"");
 
 
             }
@@ -91,29 +105,17 @@ public class Tournaments_list_fragment extends Fragment {
         return root;
     }
     EditText text;
-    DB d;
-    Tournament t;
 
-    public void ChangeFragment(Fragment fragment)
-    {
 
-        FragmentManager fm=getActivity().getSupportFragmentManager();
-        FragmentTransaction ft=fm.beginTransaction();
-        ft.replace(R.id.main_fragments_container,fragment);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-        ft.addToBackStack(null);
-        ft.commit();
 
-    }
+
+
     public void showPopDialog()
     {
 
         addTournament.setContentView(R.layout.addtournamentsoriginal);
 
         text=(EditText)addTournament.findViewById(R.id.editText3);
-
-
-
         Button close=(Button)addTournament.findViewById(R.id.closebtn);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,8 +123,6 @@ public class Tournaments_list_fragment extends Fragment {
                 addTournament.dismiss();
             }
         });
-        d=new DB(getContext());
-        t=new Tournament();
         Button add=(Button)addTournament.findViewById(R.id.add);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,18 +131,30 @@ public class Tournaments_list_fragment extends Fragment {
                 {
                     //Add new Tournament
                     t.Insert(d.getWritableDatabase(),text.getText().toString());
-                    //Update adapter
-                    adapter.clear();
-                    String data[]=t.getTournamentList(d.getReadableDatabase());
-                    adapter.addAll(data );
+                    resetList();
                     addTournament.dismiss();
-
 
                 }
             }
         });
 
         addTournament.show();
+
+    }
+    public void resetList()
+    {
+        adapter.clear();
+        tournamensList=t.getAll(d.getReadableDatabase());
+        tournaments=tournamensList.toArray(new TournamentModel[tournamensList.size()]);
+
+        List<String> tournamentsName=new ArrayList<>();
+        for(TournamentModel tm:tournaments)
+        {
+            tournamentsName.add(tm.getName());
+        }
+
+
+        adapter.addAll(tournamentsName);
 
     }
 

@@ -7,7 +7,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add new player"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:background="@color/colorPrimaryLight"
+        android:padding="10dp"
+        android:textColor="@color/colorAccent"
 
+        />
     <EditText
         android:id="@+id/playerName"
         android:layout_width="wrap_content"
@@ -21,37 +32,27 @@
         android:textCursorDrawable="@null"
         />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="21dp"
-        android:layout_marginStart="21dp"
-        android:gravity="center"
-        android:layout_weight="0.10">
+        android:layout_height="47dp"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/closebtnteammodal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-
-            android:text="Cancel" />
+            style="@style/raisedButton"
+            android:layout_weight="1"
+            android:text="calcel" />
 
         <Button
             android:id="@+id/addplayerbutton"
+            style="@style/raisedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/closebtnteammodal"
-            android:layout_alignBottom="@+id/closebtnteammodal"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_weight="1"
             android:text="Add" />
-    </RelativeLayout>
+    </LinearLayout>
+
 
 </LinearLayout>

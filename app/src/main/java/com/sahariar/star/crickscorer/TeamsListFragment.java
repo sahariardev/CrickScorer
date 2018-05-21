@@ -98,7 +98,7 @@ public class TeamsListFragment extends Fragment {
 
 
         //generating the list--start
-        teams=teamDb.getAllplayers(db.getReadableDatabase());
+        teams=teamDb.getAllTeams(db.getReadableDatabase());
         teamListArray= teams.toArray(new Team[teams.size()]);
 
         List<String> teamnames=new ArrayList<>();
@@ -146,7 +146,7 @@ public class TeamsListFragment extends Fragment {
     public void resetList()
     {
         teamListAdapter.clear();
-        teams=teamDb.getAllplayers(db.getReadableDatabase());
+        teams=teamDb.getAllTeams(db.getReadableDatabase());
         teamListArray=teams.toArray(new Team[teams.size()]);
         List<String> teamnamelist=new ArrayList<>();
         for(Team t:teamListArray)

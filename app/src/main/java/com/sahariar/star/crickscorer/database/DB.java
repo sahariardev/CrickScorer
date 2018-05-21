@@ -33,6 +33,7 @@ public class DB extends SQLiteOpenHelper {
         String tournaments="Create Table tournaments"+
                             "("+
                               "id INTEGER PRIMARY KEY AUTOINCREMENT ,"+
+                              "extra INTEGER  ,"+
                                "name TEXT"
                               +");";
 
@@ -55,7 +56,7 @@ public class DB extends SQLiteOpenHelper {
         String balls="Create Table balls  "+
                 "("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT ,"+
-                "bowler_id INTEGER,"+
+                "baller_id INTEGER,"+
                 "batsman_id INTEGER, "+
                 "runs INTEGER,"+
                 "type INTEGER,"+
@@ -66,8 +67,8 @@ public class DB extends SQLiteOpenHelper {
         String overs="Create Table overs "+
                 "("+
                 "id INTEGER PRIMARY KEY AUTOINCREMENT ,"+
-                "bowler_id INTEGER,"+
-                "match_id INTEGER"
+                "ballingTeam_id INTEGER ,"+
+                "battingTeam_id INTEGER"
                 +");";
         String teams="Create Table teams "+
                   "("+

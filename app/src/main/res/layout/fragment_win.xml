@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.sahariar.star.crickscorer.WinFragment">
+
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textSize="40sp"
+        android:textAlignment="center"
+        android:textColor="@color/colorAdvanceDark"
+        android:layout_marginTop="100px"
+        android:text="CSK WIN BY 8 WICKETS" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/raisedButton"
+        android:text="Detail" />
+
+</LinearLayout>
